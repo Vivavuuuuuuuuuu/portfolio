@@ -1,0 +1,191 @@
+/* =============================================================================
+   PORTFOLIO — STYLE.CSS
+   =============================================================================
+   
+   Structure de la page :
+   ┌─────────────────────────────────────┐
+   │         PANNEAU IMAGES (50vh)       │  ← grille d'images/vidéos
+   │                                     │
+   │ ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ │  ← fondu bas (toujours visible)
+   ├─────────────────────────────────────┤
+   │ ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ │  ← fondu haut (visible au scroll)
+   │                                     │
+   │        PANNEAU LÉGENDES (50vh)      │  ← grille de textes (même layout)
+   └─────────────────────────────────────┘
+   
+   Les deux panneaux scrollent de manière synchronisée.
+   
+   ============================================================================= */
+
+
+/* ----- Reset ----- */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* ----- Base typographique -----
+   Font    : Times New Roman, regular
+   Corps   : 16px
+   Interligne : 18px (line-height)
+   Couleur : gris (#999), noir (#000) au hover
+   --------------------------------------- */
+
+html, body {
+    height: 100%;
+    overflow: hidden;               /* Pas de scroll natif, géré en JS */
+    font-family: "Times New Roman", Times, serif;
+    font-size: 14px;
+    font-weight: auto;
+    line-height: 17px;
+    color: #B0B0B0;
+}
+
+
+/* ----- Layout page ----- */
+
+.page {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* ----- Panneaux (haut = images, bas = légendes) -----
+   Chacun prend 50% de la hauteur de la fenêtre.
+   overflow:hidden empêche le scroll natif (géré via JS).
+   ------------------------------------------------------ */
+
+.panel {
+    height: 50vh;
+    overflow: hidden;
+    position: relative;
+}
+
+
+/* ----- Fondus à la jonction -----
+   .fade-bottom : en bas du panneau images (toujours visible)
+   .fade-top    : en haut du panneau légendes (apparaît au scroll)
+   Hauteur : 15px
+   ---------------------------------------------------------------- */
+
+.fade-overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 15px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.fade-bottom {
+    bottom: 0;
+    background: linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+}
+
+.fade-top {
+    top: 0;
+    background: linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.fade-top.is-visible {
+    opacity: 1;
+}
+
+
+/* ----- Contenu scrollable -----
+   Le padding de 5px correspond aux marges gauche/droite/haut/bas.
+   Le scroll est appliqué via transform en JS.
+   --------------------------------------------------------------- */
+
+.scroll-content {
+    padding: 10px;
+}
+
+
+/* ----- Grille flex-wrap -----
+   Les items s'affichent de gauche à droite et passent
+   à la ligne quand il n'y a plus de place.
+   Gap : 5px entre chaque item (horizontal et vertical).
+   ------------------------------------------------------- */
+
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    align-content: flex-start;
+}
+
+
+/* ----- Cellules images -----
+   Dimensions fixées en JS (largeur = hauteur × ratio).
+   Les images/vidéos remplissent la cellule avec object-fit: cover.
+   ---------------------------------------------------------------- */
+
+.img-cell {
+    overflow: hidden;
+    cursor: pointer;
+    flex-shrink: 0;
+    flex-grow: 0;
+}
+
+.img-cell iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    pointer-events: none;
+    display: block;
+}
+
+.img-cell img,
+.img-cell video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Placeholder gris clair (affiché quand src est vide) */
+.img-cell .placeholder {
+    width: 100%;
+    height: 100%;
+    background: #B0B0B0;
+}
+
+
+/* ----- Cellules légendes -----
+   Mêmes dimensions que les cellules images correspondantes.
+   Le texte utilise des césures automatiques (hyphens: auto).
+   ---------------------------------------------------------- */
+
+.cap-cell {
+    overflow: hidden;
+    flex-shrink: 0;
+    flex-grow: 0;
+}
+
+.cap-cell p {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 14px;
+    font-weight: auto;
+    line-height: 17px;
+    color: #B0B0B0;
+    transition: color 0.2s ease;
+
+    /* Césures automatiques pour les mots longs */
+    hyphens: none;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+/* Au survol d'une image, la légende passe en noir */
+.cap-cell p.is-active {
+    color: #000;
+}
