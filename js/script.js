@@ -299,7 +299,7 @@ const PORTFOLIO_DATA = [
     { type: "image", src: "assets/images/LCL/417882509_3586833191564720_1318381436124327_n.jpg", caption: "Ensad Nancy, La Dépense, Book Design & Offset Optimization, made with LCL, 2025", ratio: "4:5" },
     { type: "image", src: "assets/images/LCL/417439222_737716301276203_8436803589948453836_n.jpg", caption: "Ensad Nancy, La Dépense, Book Design & Offset Optimization, made with LCL, 2025", ratio: "4:5" },
 
-    { type: "image", src: "assets/images/MACULES/sans-titre-6672.JPG", caption: "Ensad Nancy, Offset Optimization Guide, Book Design & Offset Optimization, 2025", ratio: "16:9" },
+    { type: "image", src: "assets/images/MACULES/sans-titre-6672.jpg", caption: "Ensad Nancy, Offset Optimization Guide, Book Design & Offset Optimization, 2025", ratio: "16:9" },
     { type: "image", src: "assets/images/MACULES/Numeriser 15.jpg", caption: "Ensad Nancy, Offset Optimization Guide, Book Design & Offset Optimization, made with LCL, 2025", ratio: "2:3" },
     { type: "image", src: "assets/images/MACULES/Numeriser 22.jpg", caption: "Ensad Nancy, Offset Optimization Guide, Book Design & Offset Optimization, made with LCL, 2025", ratio: "16:9" },
     { type: "image", src: "assets/images/MACULES/Numeriser 16.jpg", caption: "Ensad Nancy, Offset Optimization Guide, Book Design & Offset Optimization, made with LCL, 2025", ratio: "2:3" },
