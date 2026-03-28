@@ -316,14 +316,12 @@ const PORTFOLIO_DATA = [
    2. CONSTRUCTION DE LA GRILLE
    =============================================================================
    
-   La grille est construite dynamiquement en JS.
-   
-   - La hauteur de ligne est calculée pour que ~2.5 lignes soient visibles
-     dans chaque panneau (50vh).
-   - Chaque item a une largeur = hauteur × ratio.
-   - Le flex-wrap CSS fait passer les items à la ligne automatiquement.
-   - La grille des légendes est une copie exacte de celle des images
-     (mêmes dimensions par cellule).
+   - Hauteur de ligne calculée pour ~2 lignes sur desktop, ~1.5 sur mobile
+   - Chaque item : largeur = hauteur × ratio
+   - Flex-wrap CSS pour le passage à la ligne
+   - Lazy loading via IntersectionObserver pour images, vidéos et Vimeo
+   - preload="none" sur toutes les vidéos locales
+   - Les vidéos/iframes ne se chargent que quand elles entrent dans le viewport
    
    ============================================================================= */
 
@@ -331,30 +329,57 @@ const gridImages = document.getElementById('gridImages');
 const gridCaptions = document.getElementById('gridCaptions');
 const panelImages = document.getElementById('panelImages');
 
-/* Espacement entre les items et marges de la page (en px) */
 const GAP = 5;
 const PADDING = 10;
 
-/**
- * Calcule la hauteur de ligne pour que 2.5 lignes soient visibles.
- * Formule : (hauteur dispo - 2 gaps entre lignes) / 2.5
- */
 function getRowHeight() {
     const panelH = panelImages.clientHeight;
     const availableH = panelH - (PADDING * 2);
     const isMobile = window.innerWidth <= 768;
-    const rowCount = isMobile ? 2.5 : 2.1;
+    const rowCount = isMobile ? 1.5 : 2.1;
     const gapCount = Math.floor(rowCount);
     return (availableH - (gapCount * GAP)) / rowCount;
-    }
+}
 
 /**
- * Construit les deux grilles (images + légendes) à partir de PORTFOLIO_DATA.
- * Appelée au chargement et à chaque redimensionnement de la fenêtre.
+ * Lazy loading : les vidéos et iframes ne se chargent que
+ * quand elles sont proches du viewport visible.
+ * Les images utilisent le loading="lazy" natif du navigateur.
  */
+let lazyObserver = null;
+
+function setupLazyLoading() {
+    if (lazyObserver) lazyObserver.disconnect();
+
+    lazyObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const el = entry.target;
+
+                if (el.tagName === 'VIDEO' && el.dataset.src) {
+                    el.src = el.dataset.src;
+                    el.load();
+                    lazyObserver.unobserve(el);
+                }
+
+                if (el.tagName === 'IFRAME' && el.dataset.src) {
+                    el.src = el.dataset.src;
+                    lazyObserver.unobserve(el);
+                }
+            }
+        });
+    }, {
+        /* Observe dans le scroll-content parent, pas le viewport global */
+        root: null,
+        rootMargin: '200px 0px'
+    });
+}
+
 function buildGrid() {
     gridImages.innerHTML = '';
     gridCaptions.innerHTML = '';
+
+    setupLazyLoading();
 
     const rowH = getRowHeight();
 
@@ -368,40 +393,47 @@ function buildGrid() {
         imgCell.style.width = cellW + 'px';
         imgCell.style.height = rowH + 'px';
 
+        /* Clic → ouvre dans un nouvel onglet */
         if (item.src) {
-    imgCell.addEventListener('click', () => {
-        if (item.type === 'vimeo') {
-            window.open('https://vimeo.com/' + item.src, '_blank');
-        } else {
-            window.open(item.src, '_blank');
+            imgCell.addEventListener('click', () => {
+                if (item.type === 'vimeo') {
+                    window.open('https://vimeo.com/' + item.src, '_blank');
+                } else {
+                    window.open(item.src, '_blank');
+                }
+            });
         }
-    });
-}
 
         if (item.src) {
-    if (item.type === 'vimeo') {
-        const iframe = document.createElement('iframe');
-        iframe.src = 'https://player.vimeo.com/video/' + item.src + '?background=1&autoplay=1&loop=1&muted=1';
-        iframe.allow = 'autoplay';
-        imgCell.appendChild(iframe);
-    } else if (item.type === 'video') {
-        const vid = document.createElement('video');
-        vid.src = item.src;
-        vid.autoplay = true;
-        vid.loop = true;
-        vid.muted = true;
-        vid.playsInline = true;
-        imgCell.appendChild(vid);
-    } else {
-        const img = document.createElement('img');
-        img.src = item.src;
-        img.alt = item.caption;
-        img.loading = 'lazy';
-        imgCell.appendChild(img);
-    }
-}
-         else {
-            /* Pas de src → placeholder gris */
+            if (item.type === 'vimeo') {
+                const iframe = document.createElement('iframe');
+                /* src différé → lazy loading */
+                iframe.dataset.src = 'https://player.vimeo.com/video/' + item.src + '?background=1&autoplay=1&loop=1&muted=1';
+                iframe.allow = 'autoplay';
+                iframe.loading = 'lazy';
+                imgCell.appendChild(iframe);
+                lazyObserver.observe(iframe);
+
+            } else if (item.type === 'video') {
+                const vid = document.createElement('video');
+                /* src différé → lazy loading, pas de preload */
+                vid.dataset.src = item.src;
+                vid.preload = 'none';
+                vid.autoplay = true;
+                vid.loop = true;
+                vid.muted = true;
+                vid.playsInline = true;
+                imgCell.appendChild(vid);
+                lazyObserver.observe(vid);
+
+            } else {
+                const img = document.createElement('img');
+                img.src = item.src;
+                img.alt = item.caption;
+                img.loading = 'lazy';
+                imgCell.appendChild(img);
+            }
+        } else {
             const placeholder = document.createElement('div');
             placeholder.className = 'placeholder';
             imgCell.appendChild(placeholder);
@@ -409,7 +441,7 @@ function buildGrid() {
 
         gridImages.appendChild(imgCell);
 
-        /* --- Cellule légende (mêmes dimensions) --- */
+        /* --- Cellule légende --- */
         const capCell = document.createElement('div');
         capCell.className = 'cap-cell';
         capCell.style.width = cellW + 'px';
@@ -421,21 +453,20 @@ function buildGrid() {
 
         gridCaptions.appendChild(capCell);
 
-        /* --- Hover : survol image → légende en noir --- */
+        /* Hover */
         imgCell.addEventListener('mouseenter', () => p.classList.add('is-active'));
         imgCell.addEventListener('mouseleave', () => p.classList.remove('is-active'));
     });
 }
 
-/* Construction initiale */
 buildGrid();
 
-/* Reconstruction au redimensionnement (debounce 80ms) */
 let resizeTimer;
 window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => {
         scrollPos = 0;
+        velocity = 0;
         buildGrid();
         applyScroll();
     }, 80);
@@ -443,24 +474,26 @@ window.addEventListener('resize', () => {
 
 
 /* =============================================================================
-   3. SCROLL SYNCHRONISÉ
+   3. SCROLL SYNCHRONISÉ AVEC INERTIE
    =============================================================================
    
-   Les deux panneaux (images et légendes) défilent ensemble.
-   Le scroll est géré manuellement via transform translateY
-   pour permettre la synchronisation parfaite.
-   
-   Supporte : molette, tactile, clavier (flèches, Page Up/Down, Home/End).
+   Scroll fluide avec décélération progressive.
+   Sur mobile, le geste tactile lance une vélocité qui ralentit
+   naturellement, comme un scroll natif.
    
    ============================================================================= */
 
 let scrollPos = 0;
+let velocity = 0;
+let isAnimating = false;
+let lastTouchY = 0;
+let lastTouchTime = 0;
+
 const fadeTop = document.getElementById('fadeTop');
 
-/**
- * Affiche/masque le fondu en haut des légendes selon la position du scroll.
- * Le fondu en bas des images est toujours visible (géré en CSS).
- */
+const FRICTION = 0.92;          /* Décélération (0.90 = rapide, 0.95 = lent) */
+const MIN_VELOCITY = 0.5;      /* Seuil d'arrêt */
+
 function updateFades() {
     if (scrollPos > 0) {
         fadeTop.classList.add('is-visible');
@@ -469,21 +502,48 @@ function updateFades() {
     }
 }
 
-/** Calcule le scroll maximum possible */
 function getMaxScroll() {
     const contentH = gridImages.scrollHeight + (PADDING * 2);
     const panelH = panelImages.clientHeight;
     return Math.max(0, contentH - panelH);
 }
 
-/** Applique la position de scroll aux deux panneaux */
 function applyScroll() {
     document.getElementById('scrollImages').style.transform = `translateY(${-scrollPos}px)`;
     document.getElementById('scrollCaptions').style.transform = `translateY(${-scrollPos}px)`;
     updateFades();
 }
 
-/* --- Molette --- */
+/** Boucle d'animation pour l'inertie */
+function animateScroll() {
+    if (Math.abs(velocity) < MIN_VELOCITY) {
+        isAnimating = false;
+        return;
+    }
+
+    scrollPos += velocity;
+    velocity *= FRICTION;
+
+    const maxScroll = getMaxScroll();
+    scrollPos = Math.max(0, Math.min(scrollPos, maxScroll));
+
+    /* Rebond doux aux limites */
+    if (scrollPos <= 0 || scrollPos >= maxScroll) {
+        velocity = 0;
+    }
+
+    applyScroll();
+    requestAnimationFrame(animateScroll);
+}
+
+function startAnimation() {
+    if (!isAnimating) {
+        isAnimating = true;
+        requestAnimationFrame(animateScroll);
+    }
+}
+
+/* --- Molette (desktop) --- */
 window.addEventListener('wheel', (e) => {
     e.preventDefault();
     const maxScroll = getMaxScroll();
@@ -491,22 +551,38 @@ window.addEventListener('wheel', (e) => {
     applyScroll();
 }, { passive: false });
 
-/* --- Tactile (mobile) --- */
-let touchStartY = 0;
-let touchStartScroll = 0;
-
+/* --- Tactile avec inertie (mobile) --- */
 window.addEventListener('touchstart', (e) => {
-    touchStartY = e.touches[0].clientY;
-    touchStartScroll = scrollPos;
+    velocity = 0;
+    isAnimating = false;
+    lastTouchY = e.touches[0].clientY;
+    lastTouchTime = Date.now();
 }, { passive: true });
 
 window.addEventListener('touchmove', (e) => {
     e.preventDefault();
-    const deltaY = touchStartY - e.touches[0].clientY;
+    const currentY = e.touches[0].clientY;
+    const currentTime = Date.now();
+    const deltaY = lastTouchY - currentY;
+    const deltaTime = currentTime - lastTouchTime;
+
+    /* Calcul de la vélocité instantanée */
+    if (deltaTime > 0) {
+        velocity = deltaY / deltaTime * 16; /* Normaliser à ~60fps */
+    }
+
     const maxScroll = getMaxScroll();
-    scrollPos = Math.max(0, Math.min(touchStartScroll + deltaY, maxScroll));
+    scrollPos = Math.max(0, Math.min(scrollPos + deltaY, maxScroll));
     applyScroll();
+
+    lastTouchY = currentY;
+    lastTouchTime = currentTime;
 }, { passive: false });
+
+window.addEventListener('touchend', () => {
+    /* Lancer l'inertie avec la vélocité accumulée */
+    startAnimation();
+});
 
 /* --- Clavier --- */
 window.addEventListener('keydown', (e) => {

@@ -4,41 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lucas Pierrot</title>
+
+    <!-- FAVICON — remplace le href par le chemin vers ton fichier logo
+         Formats recommandés : .png 32×32px ou .ico
+         Ex: <link rel="icon" href="assets/images/favicon.png" type="image/png"> -->
+         
+    <link rel="icon" href="assets/images/favicon.png" type="image/png">
+
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
-<!-- =================================================================
-     STRUCTURE DE LA PAGE
-     
-     La page est divisée en 2 panneaux de 50vh chacun :
-     - En haut : la grille d'images/vidéos
-     - En bas  : la grille de légendes (même disposition)
-     
-     Les deux panneaux scrollent ensemble.
-     ================================================================= -->
 
 <div class="page">
 
     <!-- PANNEAU IMAGES (moitié haute) -->
     <div class="panel panel-images" id="panelImages">
         <div class="scroll-content" id="scrollImages">
-            <div class="grid" id="gridImages">
-                <!-- Les cellules images sont générées par script.js -->
-            </div>
+            <div class="grid" id="gridImages"></div>
         </div>
-        <!-- Fondu blanc en bas des images (toujours visible) -->
         <div class="fade-overlay fade-bottom" id="fadeBottom"></div>
     </div>
 
     <!-- PANNEAU LÉGENDES (moitié basse) -->
     <div class="panel panel-captions" id="panelCaptions">
-        <!-- Fondu blanc en haut des légendes (visible au scroll) -->
         <div class="fade-overlay fade-top" id="fadeTop"></div>
         <div class="scroll-content" id="scrollCaptions">
-            <div class="grid" id="gridCaptions">
-                <!-- Les cellules légendes sont générées par script.js -->
-            </div>
+            <div class="grid" id="gridCaptions"></div>
         </div>
     </div>
 
