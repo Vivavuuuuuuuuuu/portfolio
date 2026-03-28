@@ -390,22 +390,43 @@ function buildGrid() {
 
             if (item.type === 'vimeo') {
                 const iframe = document.createElement('iframe');
-                iframe.dataset.src = 'https://player.vimeo.com/video/' + item.src + '?background=1&autoplay=1&loop=1&muted=1';
                 iframe.allow = 'autoplay';
                 iframe.loading = 'lazy';
                 imgCell.appendChild(iframe);
-                lazyObserver.observe(iframe);
 
-                /* Loader APRÈS le média pour être au-dessus dans le DOM */
                 const loader = document.createElement('div');
                 loader.className = 'loader-text';
                 loader.innerHTML = '<span>L</span><span>o</span><span>a</span><span>d</span><span>i</span><span>n</span><span>g</span><span>.</span><span>.</span><span>.</span>';
                 imgCell.appendChild(loader);
 
+                let iframeReady = false;
+                let timerDone = false;
+
+                function showVideo() {
+                    if (iframeReady && timerDone) {
+                        iframe.classList.add('loaded');
+                        if (loader.parentNode) loader.remove();
+                    }
+                }
+
                 iframe.addEventListener('load', () => {
-                    iframe.classList.add('loaded');
-                    if (loader.parentNode) loader.remove();
+                    iframeReady = true;
+                    showVideo();
                 });
+
+                const vimeoObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            iframe.src = 'https://player.vimeo.com/video/' + item.src + '?background=1&autoplay=1&loop=1&muted=1';
+                            setTimeout(() => {
+                                timerDone = true;
+                                showVideo();
+                            }, 3000);
+                            vimeoObserver.disconnect();
+                        }
+                    });
+                }, { rootMargin: '200px 0px' });
+                vimeoObserver.observe(imgCell);
 
             } else if (item.type === 'video') {
                 const vid = document.createElement('video');
