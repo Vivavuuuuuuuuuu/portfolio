@@ -62,20 +62,20 @@ const PORTFOLIO_DATA = [
     // ─── Tes contenus ici ─────────────────────────────────────────────
     // Supprime les exemples ci-dessous et remplace par tes propres items.
 
-    { type: "image", src: "assets/images/Etudes/N28/DSC05873.jpg", caption: "Études Studio No.28, Lookbook FW26 Runway, Art Direction Support & Post-Production Coordination, 2026, 1/4", ratio: "2:3" },
-    { type: "image", src: "assets/images/Etudes/N28/DSC05617.jpg", caption: "Études Studio No.28, Lookbook FW26 Runway, Art Direction Support & Post-Production Coordination, 2026, 2/4", ratio: "2:3" },
-    { type: "image", src: "assets/images/Etudes/N28/DSC07142.jpg", caption: "Études Studio No.28, Lookbook FW26 Runway, Art Direction Support & Post-Production Coordination, 2026, 3/4", ratio: "2:3" },
-    { type: "image", src: "assets/images/Etudes/N28/DSC06135.jpg", caption: "Études Studio No.28, Lookbook FW26 Runway, Art Direction Support & Post-Production Coordination, 2026, 4/4", ratio: "2:3" },
-    { type: "vimeo", src: "1177344274", caption: "Études Studio No.28, FW26 Runway, Editing, 2026, 1/3", ratio: "4:5" },
-    { type: "vimeo", src: "1177344546", caption: "Études Studio No.28, FW26 Runway, Editing, 2026, 2/3", ratio: "4:5" },
-    { type: "vimeo", src: "1177344788", caption: "Études Studio No.28, FW26 Runway, Editing, 2026, 3/3", ratio: "4:5" },
-    { type: "image", src: "assets/images/Etudes/N28/Found_Tape_Fixe_01.jpg", caption: "Études Studio No.28, FW26 Runway Teaser, Shooting & Editing, 2026, 1/2", ratio: "4:5" },
-    { type: "vimeo", src: "1177742973", caption: "Études Studio No.28, FW26 Runway Teaser, Shooting & Editing, 2026, 2/2", ratio: "4:5" },
-    { type: "image", src: "assets/images/Etudes/N28/E_NO28_SHOW_STD.jpg", caption: "Études Studio No.28, FW26 Runway Invite, Graphic Design, 2026, 1/2", ratio: "32:23" },
-    { type: "image", src: "assets/images/Etudes/N28/E_NO28_WHOLESALE_SHOWROOM_STD_02.jpg", caption: "Études Studio No.28, FW26 Runway Invite, Graphic Design, 2026, 2/2", ratio: "32:23" },
-    { type: "image", src: "assets/images/Etudes/N28/OPM_ETUDES-V01-10.jpg", caption: "Études Studio No.28, FW26 Showroom Shooting, Shooting Coordination, 2026, 1/3", ratio: "2:3" },
-    { type: "image", src: "assets/images/Etudes/N28/OPM_ETUDES-V01-09.jpg", caption: "Études Studio No.28, FW26 Showroom Shooting, Shooting Coordination, 2026, 2/3", ratio: "2:3" },
-    { type: "image", src: "assets/images/Etudes/N28/OPM_ETUDES-V01-11.jpg", caption: "Études Studio No.28, FW26 Showroom Shooting, Shooting Coordination, 2026, 3/3", ratio: "2:3" },
+    { type: "image", src: "assets/images/Etudes/N28/DSC05873.jpg", caption: "Études Studio No.28, Lookbook FW26 Runway, Art Direction Support & Post-Production Coordination, 2026", ratio: "2:3" },
+    { type: "image", src: "assets/images/Etudes/N28/DSC05617.jpg", caption: "Études Studio No.28, Lookbook FW26 Runway, Art Direction Support & Post-Production Coordination, 2026", ratio: "2:3" },
+    { type: "image", src: "assets/images/Etudes/N28/DSC07142.jpg", caption: "Études Studio No.28, Lookbook FW26 Runway, Art Direction Support & Post-Production Coordination, 2026", ratio: "2:3" },
+    { type: "image", src: "assets/images/Etudes/N28/DSC06135.jpg", caption: "Études Studio No.28, Lookbook FW26 Runway, Art Direction Support & Post-Production Coordination, 2026", ratio: "2:3" },
+    { type: "vimeo", src: "1177344274", caption: "Études Studio No.28, FW26 Runway, Editing, 2026", ratio: "4:5" },
+    { type: "vimeo", src: "1177344546", caption: "Études Studio No.28, FW26 Runway, Editing, 2026", ratio: "4:5" },
+    { type: "vimeo", src: "1177344788", caption: "Études Studio No.28, FW26 Runway, Editing, 2026", ratio: "4:5" },
+    { type: "image", src: "assets/images/Etudes/N28/Found_Tape_Fixe_01.jpg", caption: "Études Studio No.28, FW26 Runway Teaser, Shooting & Editing, 2026", ratio: "4:5" },
+    { type: "vimeo", src: "1177742973", caption: "Études Studio No.28, FW26 Runway Teaser, Shooting & Editing, 2026", ratio: "4:5" },
+    { type: "image", src: "assets/images/Etudes/N28/E_NO28_SHOW_STD.jpg", caption: "Études Studio No.28, FW26 Runway Invite, Graphic Design, 2026", ratio: "32:23" },
+    { type: "image", src: "assets/images/Etudes/N28/E_NO28_WHOLESALE_SHOWROOM_STD_02.jpg", caption: "Études Studio No.28, FW26 Runway Invite, Graphic Design, 2026", ratio: "32:23" },
+    { type: "image", src: "assets/images/Etudes/N28/OPM_ETUDES-V01-10.jpg", caption: "Études Studio No.28, FW26 Showroom Shooting, Shooting Coordination, 2026", ratio: "2:3" },
+    { type: "image", src: "assets/images/Etudes/N28/OPM_ETUDES-V01-09.jpg", caption: "Études Studio No.28, FW26 Showroom Shooting, Shooting Coordination, 2026", ratio: "2:3" },
+    { type: "image", src: "assets/images/Etudes/N28/OPM_ETUDES-V01-11.jpg", caption: "Études Studio No.28, FW26 Showroom Shooting, Shooting Coordination, 2026", ratio: "2:3" },
    
     { type: "image", src: "assets/images/Etudes/N27/Etudes Studio_SS26_runway_IG_look06.jpg", caption: "Études Studio No.27, SS26 Runway, Art Direction Support & Post-Production Coordination, 2025", ratio: "2:3" },
     { type: "image", src: "assets/images/Etudes/N27/Etudes Studio_SS26_runway_IG_look12.jpg", caption: "Études Studio No.27, SS26 Runway, Art Direction Support & Post-Production Coordination, 2025", ratio: "2:3" },
@@ -327,7 +327,7 @@ function getRowHeight() {
     const panelH = panelImages.clientHeight;
     const availableH = panelH - (PADDING * 2);
     const isMobile = window.innerWidth <= 768;
-    const rowCount = isMobile ? 1.8 : 2.1;
+    const rowCount = isMobile ? 2 : 2.1;
     const gapCount = Math.floor(rowCount);
     return (availableH - (gapCount * GAP)) / rowCount;
 }

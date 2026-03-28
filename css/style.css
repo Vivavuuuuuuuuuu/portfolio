@@ -179,7 +179,7 @@ html, body {
     line-height: 17px;
     color: #B0B0B0;
     transition: color 0.2s ease;
-    hyphens: auto;
+    hyphens: none;
     -webkit-hyphens: auto;
     -ms-hyphens: auto;
     overflow-wrap: break-word;
