@@ -314,15 +314,6 @@ const PORTFOLIO_DATA = [
 
 /* =============================================================================
    2. CONSTRUCTION DE LA GRILLE
-   =============================================================================
-   
-   - Hauteur de ligne calculée pour ~2 lignes sur desktop, ~1.5 sur mobile
-   - Chaque item : largeur = hauteur × ratio
-   - Flex-wrap CSS pour le passage à la ligne
-   - Lazy loading via IntersectionObserver pour images, vidéos et Vimeo
-   - preload="none" sur toutes les vidéos locales
-   - Les vidéos/iframes ne se chargent que quand elles entrent dans le viewport
-   
    ============================================================================= */
 
 const gridImages = document.getElementById('gridImages');
@@ -341,11 +332,6 @@ function getRowHeight() {
     return (availableH - (gapCount * GAP)) / rowCount;
 }
 
-/**
- * Lazy loading : les vidéos et iframes ne se chargent que
- * quand elles sont proches du viewport visible.
- * Les images utilisent le loading="lazy" natif du navigateur.
- */
 let lazyObserver = null;
 
 function setupLazyLoading() {
@@ -369,7 +355,6 @@ function setupLazyLoading() {
             }
         });
     }, {
-        /* Observe dans le scroll-content parent, pas le viewport global */
         root: null,
         rootMargin: '200px 0px'
     });
@@ -393,13 +378,8 @@ function buildGrid() {
         imgCell.style.width = cellW + 'px';
         imgCell.style.height = rowH + 'px';
 
-        const loader = document.createElement('div');
-        loader.className = 'loader-text';
-        loader.innerHTML = '<span>L</span><span>o</span><span>a</span><span>d</span><span>i</span><span>n</span><span>g</span><span>.</span><span>.</span><span>.</span>';
-        imgCell.appendChild(loader);
-
-        /* Clic → ouvre dans un nouvel onglet */
         if (item.src) {
+            /* Clic → ouvre dans un nouvel onglet */
             imgCell.addEventListener('click', () => {
                 if (item.type === 'vimeo') {
                     window.open('https://vimeo.com/' + item.src, '_blank');
@@ -407,25 +387,28 @@ function buildGrid() {
                     window.open(item.src, '_blank');
                 }
             });
-        }
 
-        if (item.src) {
             if (item.type === 'vimeo') {
                 const iframe = document.createElement('iframe');
-                /* src différé → lazy loading */
                 iframe.dataset.src = 'https://player.vimeo.com/video/' + item.src + '?background=1&autoplay=1&loop=1&muted=1';
                 iframe.allow = 'autoplay';
                 iframe.loading = 'lazy';
                 imgCell.appendChild(iframe);
                 lazyObserver.observe(iframe);
+
+                /* Loader APRÈS le média pour être au-dessus dans le DOM */
+                const loader = document.createElement('div');
+                loader.className = 'loader-text';
+                loader.innerHTML = '<span>L</span><span>o</span><span>a</span><span>d</span><span>i</span><span>n</span><span>g</span><span>.</span><span>.</span><span>.</span>';
+                imgCell.appendChild(loader);
+
                 iframe.addEventListener('load', () => {
-                const l = imgCell.querySelector('.loader-text');
-                if (l) l.remove();
-                        });
+                    iframe.classList.add('loaded');
+                    if (loader.parentNode) loader.remove();
+                });
 
             } else if (item.type === 'video') {
                 const vid = document.createElement('video');
-                /* src différé → lazy loading, pas de preload */
                 vid.dataset.src = item.src;
                 vid.preload = 'none';
                 vid.autoplay = true;
@@ -434,11 +417,17 @@ function buildGrid() {
                 vid.playsInline = true;
                 imgCell.appendChild(vid);
                 lazyObserver.observe(vid);
-                vid.addEventListener('playing', () => {
-                const l = imgCell.querySelector('.loader-text');
-                 if (l) l.remove();
-                        });
-                
+
+                /* Loader APRÈS le média pour être au-dessus dans le DOM */
+                const loader = document.createElement('div');
+                loader.className = 'loader-text';
+                loader.innerHTML = '<span>L</span><span>o</span><span>a</span><span>d</span><span>i</span><span>n</span><span>g</span><span>.</span><span>.</span><span>.</span>';
+                imgCell.appendChild(loader);
+
+                vid.addEventListener('loadeddata', () => {
+                    vid.classList.add('loaded');
+                    if (loader.parentNode) loader.remove();
+                });
 
             } else {
                 const img = document.createElement('img');
@@ -446,11 +435,8 @@ function buildGrid() {
                 img.alt = item.caption;
                 img.loading = 'lazy';
                 imgCell.appendChild(img);
-                img.addEventListener('load', () => {
-        const l = imgCell.querySelector('.loader-text');
-        if (l) l.remove();
-                    });
             }
+
         } else {
             const placeholder = document.createElement('div');
             placeholder.className = 'placeholder';
@@ -493,12 +479,6 @@ window.addEventListener('resize', () => {
 
 /* =============================================================================
    3. SCROLL SYNCHRONISÉ AVEC INERTIE
-   =============================================================================
-   
-   Scroll fluide avec décélération progressive.
-   Sur mobile, le geste tactile lance une vélocité qui ralentit
-   naturellement, comme un scroll natif.
-   
    ============================================================================= */
 
 let scrollPos = 0;
@@ -509,8 +489,8 @@ let lastTouchTime = 0;
 
 const fadeTop = document.getElementById('fadeTop');
 
-const FRICTION = 0.92;          /* Décélération (0.90 = rapide, 0.95 = lent) */
-const MIN_VELOCITY = 0.5;      /* Seuil d'arrêt */
+const FRICTION = 0.92;
+const MIN_VELOCITY = 0.5;
 
 function updateFades() {
     if (scrollPos > 0) {
@@ -532,7 +512,6 @@ function applyScroll() {
     updateFades();
 }
 
-/** Boucle d'animation pour l'inertie */
 function animateScroll() {
     if (Math.abs(velocity) < MIN_VELOCITY) {
         isAnimating = false;
@@ -545,7 +524,6 @@ function animateScroll() {
     const maxScroll = getMaxScroll();
     scrollPos = Math.max(0, Math.min(scrollPos, maxScroll));
 
-    /* Rebond doux aux limites */
     if (scrollPos <= 0 || scrollPos >= maxScroll) {
         velocity = 0;
     }
@@ -584,9 +562,8 @@ window.addEventListener('touchmove', (e) => {
     const deltaY = lastTouchY - currentY;
     const deltaTime = currentTime - lastTouchTime;
 
-    /* Calcul de la vélocité instantanée */
     if (deltaTime > 0) {
-        velocity = deltaY / deltaTime * 16; /* Normaliser à ~60fps */
+        velocity = deltaY / deltaTime * 16;
     }
 
     const maxScroll = getMaxScroll();
@@ -598,7 +575,6 @@ window.addEventListener('touchmove', (e) => {
 }, { passive: false });
 
 window.addEventListener('touchend', () => {
-    /* Lancer l'inertie avec la vélocité accumulée */
     startAnimation();
 });
 
