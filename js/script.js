@@ -418,6 +418,10 @@ function buildGrid() {
                 iframe.loading = 'lazy';
                 imgCell.appendChild(iframe);
                 lazyObserver.observe(iframe);
+                iframe.addEventListener('load', () => {
+                const l = imgCell.querySelector('.loader-text');
+                if (l) l.remove();
+                        });
 
             } else if (item.type === 'video') {
                 const vid = document.createElement('video');
@@ -430,6 +434,11 @@ function buildGrid() {
                 vid.playsInline = true;
                 imgCell.appendChild(vid);
                 lazyObserver.observe(vid);
+                vid.addEventListener('playing', () => {
+                const l = imgCell.querySelector('.loader-text');
+                 if (l) l.remove();
+                        });
+                
 
             } else {
                 const img = document.createElement('img');
@@ -437,6 +446,10 @@ function buildGrid() {
                 img.alt = item.caption;
                 img.loading = 'lazy';
                 imgCell.appendChild(img);
+                img.addEventListener('load', () => {
+        const l = imgCell.querySelector('.loader-text');
+        if (l) l.remove();
+                    });
             }
         } else {
             const placeholder = document.createElement('div');
