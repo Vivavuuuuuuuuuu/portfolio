@@ -336,7 +336,7 @@ function getRowHeight() {
     const panelH = panelImages.clientHeight;
     const availableH = panelH - (PADDING * 2);
     const isMobile = window.innerWidth <= 768;
-    const rowCount = isMobile ? 1.5 : 2.1;
+    const rowCount = isMobile ? 1.8 : 2.1;
     const gapCount = Math.floor(rowCount);
     return (availableH - (gapCount * GAP)) / rowCount;
 }
@@ -392,6 +392,11 @@ function buildGrid() {
         imgCell.className = 'img-cell';
         imgCell.style.width = cellW + 'px';
         imgCell.style.height = rowH + 'px';
+
+        const loader = document.createElement('div');
+        loader.className = 'loader-text';
+        loader.innerHTML = '<span>L</span><span>o</span><span>a</span><span>d</span><span>i</span><span>n</span><span>g</span><span>.</span><span>.</span><span>.</span>';
+        imgCell.appendChild(loader);
 
         /* Clic → ouvre dans un nouvel onglet */
         if (item.src) {
