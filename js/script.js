@@ -62,6 +62,8 @@ const PORTFOLIO_DATA = [
     // ─── Tes contenus ici ─────────────────────────────────────────────
     // Supprime les exemples ci-dessous et remplace par tes propres items.
 
+    { type: "image", src: "assets/images/pp.jpg", caption: "Lucas Pierrot, Graphic & Motion Design, Art Direction, Editing, Image Capture. Porto, Portugal", ratio: "2:3" },
+
     { type: "image", src: "assets/images/Etudes/N28/DSC05873.jpg", caption: "Études Studio No.28, Lookbook FW26 Runway, Art Direction Support & Post-Production Coordination, 2026", ratio: "2:3" },
     { type: "image", src: "assets/images/Etudes/N28/DSC05617.jpg", caption: "Études Studio No.28, Lookbook FW26 Runway, Art Direction Support & Post-Production Coordination, 2026", ratio: "2:3" },
     { type: "image", src: "assets/images/Etudes/N28/DSC07142.jpg", caption: "Études Studio No.28, Lookbook FW26 Runway, Art Direction Support & Post-Production Coordination, 2026", ratio: "2:3" },
