@@ -180,8 +180,8 @@ html, body {
     color: #B0B0B0;
     transition: color 0.2s ease;
     hyphens: none;
-    -webkit-hyphens: auto;
-    -ms-hyphens: auto;
+    -webkit-hyphens: none;
+    -ms-hyphens: none;
     overflow-wrap: break-word;
     word-break: break-word;
 }
