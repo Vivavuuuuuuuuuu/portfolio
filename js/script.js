@@ -62,7 +62,7 @@ const PORTFOLIO_DATA = [
     // ─── Tes contenus ici ─────────────────────────────────────────────
     // Supprime les exemples ci-dessous et remplace par tes propres items.
 
-    { type: "image", src: "assets/images/pp.jpg", caption: "Lucas Pierrot, Graphic & Motion Design, Art Direction, Editing, Image Capture. Porto, Portugal", ratio: "2:3" },
+    { type: "image", src: "assets/images/pp.jpg", caption: "Lucas Pierrot<br><br> Graphic & Motion Design, Art Direction, Editing <br><br> Based in Porto, Portugal", ratio: "2:3", invert: true },
 
     { type: "image", src: "assets/images/Etudes/N28/DSC05873.jpg", caption: "Études Studio No.28, Lookbook FW26 Runway, Art Direction Support & Post-Production Coordination, 2026", ratio: "2:3" },
     { type: "image", src: "assets/images/Etudes/N28/DSC05617.jpg", caption: "Études Studio No.28, Lookbook FW26 Runway, Art Direction Support & Post-Production Coordination, 2026", ratio: "2:3" },
@@ -466,8 +466,6 @@ function buildGrid() {
             imgCell.appendChild(placeholder);
         }
 
-        gridImages.appendChild(imgCell);
-
         /* --- Cellule légende --- */
         const capCell = document.createElement('div');
         capCell.className = 'cap-cell';
@@ -475,10 +473,16 @@ function buildGrid() {
         capCell.style.height = rowH + 'px';
 
         const p = document.createElement('p');
-        p.textContent = item.caption;
+        p.innerHTML = item.caption;
         capCell.appendChild(p);
 
-        gridCaptions.appendChild(capCell);
+        if (item.invert) {
+            gridImages.appendChild(capCell);
+            gridCaptions.appendChild(imgCell);
+        } else {
+            gridImages.appendChild(imgCell);
+            gridCaptions.appendChild(capCell);
+}
 
         /* Hover */
         imgCell.addEventListener('mouseenter', () => p.classList.add('is-active'));
