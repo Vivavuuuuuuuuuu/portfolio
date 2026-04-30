@@ -12,6 +12,13 @@
 
 /* ----- Base typographique ----- */
 
+a {
+  color: inherit;          /* lien noir */
+  text-decoration: none; /* pas de soulignement */
+}
+
+
+
 html, body {
     height: 100%;
     overflow: hidden;
