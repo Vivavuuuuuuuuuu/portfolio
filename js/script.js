@@ -64,6 +64,8 @@ const PORTFOLIO_DATA = [
 
     { type: "image", src: "assets/images/pp.jpg", caption: "Lucas Pierrot<br><br> Graphic & Motion Design, Art Direction, Editing <br><br> Based in Porto, Portugal <br><br> <a href='mailto:lucas.pierrot9@gmail.com'>Contact</a>", ratio: "2:3", invert: true },
     
+    { type: "vimeo", src: "1198893312", caption: "CHAPTERS, Motion Design, 2026", ratio: "4:5" },
+
     { type: "image", src: "assets/images/Etudes/N28/DSC05873.jpg", caption: "Études Studio No.28, Lookbook FW26 Runway, Art Direction Support & Post-Production Coordination, 2026", ratio: "2:3" },
     { type: "image", src: "assets/images/Etudes/N28/DSC05617.jpg", caption: "Études Studio No.28, Lookbook FW26 Runway, Art Direction Support & Post-Production Coordination, 2026", ratio: "2:3" },
     { type: "image", src: "assets/images/Etudes/N28/DSC07142.jpg", caption: "Études Studio No.28, Lookbook FW26 Runway, Art Direction Support & Post-Production Coordination, 2026", ratio: "2:3" },
