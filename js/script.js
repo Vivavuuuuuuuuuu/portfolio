@@ -62,10 +62,10 @@ const PORTFOLIO_DATA = [
     // ─── Tes contenus ici ─────────────────────────────────────────────
     // Supprime les exemples ci-dessous et remplace par tes propres items.
 
-    { type: "image", src: "assets/images/pp.jpg", caption: "Lucas Pierrot<br><br> Graphic & Motion Design, Art Direction, Editing <br><br> Based in Porto, Portugal <br><br> <a href='mailto:lucas.pierrot9@gmail.com'>Contact</a>", ratio: "2:3", invert: true },
+    { type: "image", src: "assets/images/pp.jpg", caption: "Lucas Pierrot<br><br> Graphic & Motion Design, Art Direction, Editing <br><br> <a href='mailto:lucas.pierrot9@gmail.com'>Contact</a>", ratio: "2:3", invert: true },
     
-    { type: "vimeo", src: "1222111205", caption: "Michael Olise, Unpublished World Cup Content, Motion Design, 2026", ratio: "4:3" },  
-    { type: "vimeo", src: "1222110313", caption: "Michael Olise, Unpublished World Cup Content, Motion Design, 2026", ratio: "4:3" },
+    { type: "vimeo", src: "1222111205", caption: "Michael Olise, Unpreleased World Cup Content, Motion Design, 2026", ratio: "4:3" },  
+    { type: "vimeo", src: "1222110313", caption: "Michael Olise, Unreleased World Cup Content, Motion Design, 2026", ratio: "4:3" },
 
     { type: "vimeo", src: "1198893312", caption: "CHAPTERS, Motion Design, 2026", ratio: "4:5" },
 
